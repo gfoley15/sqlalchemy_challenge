@@ -1,5 +1,5 @@
 # Import the dependencies.
-import numpy as np
+# import numpy as np
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -103,17 +103,6 @@ def tobs():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-     # Find the most recent date in the data set.
-    most_recent_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
-
-    # Design a query to retrieve the last 12 months of precipitation data and plot the results. 
-    # Starting from the most recent data point in the database. 
-    most_recent_date = most_recent_date[0]
-    most_recent_date = dt.datetime.strptime(most_recent_date, '%Y-%m-%d').date()
-
-    # Calculate the date one year from the last date in data set.
-    one_year_date = most_recent_date - dt.timedelta(days=365)
-
     """Return a list of all temperature obserations for the last 12 months"""
     # Using the most active station
     # Query the last 12 months of temperature observation data for most active station
@@ -141,7 +130,7 @@ def start_date(start):
 
     """Return a list of MIN, MAX, and AVG temperature obserations for all the dates greater than or equal to the start date"""
     start_date_query = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
-        filter(Measurement.date >= start).all()
+        filter(Measurment.date >= start).all()
     
     session.close()
 
