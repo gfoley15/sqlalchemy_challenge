@@ -55,11 +55,11 @@ def welcome():
         f"<br/>"
         f"Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for all the dates greater than or equal to the start date<br/>"
         f"/api/v1.0/startdate<br/>"
-        f"API call formatting: startdate in the following format: m-d-Y<br/>"
+        f"startdate in the following format: m-d-Y. For example, api/v1.0/10-23-2016<br/>"
         f"<br/>"
         f"Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for the dates from the start date to the end date, inclusive<br/>"
         f"/api/v1.0/startdate/enddate<br/>"
-        f"API call formatting: startdate in the following format: m-d-Y<br/>"
+        f"startdate and end date in the following format: m-d-Y. For example, /api/v1.0/8-23-2016/4-12-2017<br/>"
     )
 
 @app.route("/api/v1.0/precipitation")
@@ -129,9 +129,15 @@ def tobs():
 
     """Return a list of all temperature obserations for the last 12 months"""
     # Using the most active station
+    # Create variable for most active station
+    most_active_station = session.query(Measurement.station, func.count(Measurement.station)).\
+        group_by(Measurement.station).\
+        order_by(func.count(Measurement.station).desc()).first()
+    most_active_station = most_active_station[0]
+    most_active_station
     # Query the last 12 months of temperature observation data for most active station
     lastyr_temps_query = session.query(Measurement.date, Measurement.tobs).\
-    filter(Measurement.station == 'USC00519281').\
+    filter(Measurement.station == most_active_station).\
     filter(Measurement.date >= one_year_date).\
     filter(Measurement.date <= most_recent_date).all()
     
