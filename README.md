@@ -1,5 +1,3 @@
-# sqlalchemy_challenge
-
 ## Project Summary: Climate Analysis for Honolulu, Hawaii
 - The project aims to provide valuable insights into the climate data of Honolulu, Hawaii, facilitating informed decision-making for trip planning purposes.
   
